@@ -1,7 +1,7 @@
 #include "level.h"
 #include <cstdint>
 #include <cstdio>
-#include <cmath>
+#include "geometry.h"
 
 /***********************************************/
 //                  STATICS                    //
@@ -14,19 +14,11 @@ std::vector<ILevel *>::iterator LevelContainer::current;
 //                 CONSTANTS                   //
 /***********************************************/
 
-const float FIRST_LEVEL_RADIUS_IN_METERS = 10;
+const float FIRST_LEVEL_RADIUS_IN_METERS = 20;
 
 const float FIRST_LEVEL_RADIUS_IN_METERS_SQUARED = FIRST_LEVEL_RADIUS_IN_METERS * FIRST_LEVEL_RADIUS_IN_METERS;
 
 const sf::Vector2f FIRST_LEVEL_CENTER = {0, 0};
-
-/***********************************************/
-//                 FUNCTIONS                   //
-/***********************************************/
-
-float squared_distance(sf::Vector2f a, sf::Vector2f b);
-
-float fast_invsqrt(float x);
 
 /***********************************************/
 //                  METHODS                    //
@@ -47,8 +39,6 @@ bool FirstLevel::isInside(sf::Vector2f point) {
 }
 
 sf::Vector2f FirstLevel::try_move_and_keep_in_bounds(sf::Vector2f to, void (*on_bound)()) {
-    printf("TO = (%f, %f)\n", to.x, to.y);
-    
     if (to.x == 0) {
         if (to.y >= FIRST_LEVEL_RADIUS_IN_METERS) {
             to.y = FIRST_LEVEL_RADIUS_IN_METERS;
@@ -72,26 +62,9 @@ sf::Vector2f FirstLevel::try_move_and_keep_in_bounds(sf::Vector2f to, void (*on_
         on_bound();
     }
 
-    printf("\tAFTER = (%f, %f)\n", to.x, to.y);
     return to;
 }
 
-/***********************************************/
-//           FUNCTIONS' DEFINITIONS            //
-/***********************************************/
-
-float squared_distance(sf::Vector2f a, sf::Vector2f b) {
-    auto x = a.x - b.x;
-    auto y = a.y - b.y;
-    return x * x + y * y;
-}
-
-float fast_invsqrt(float x) {
-    union {
-		float    f;
-		uint32_t i;
-	} conv = { .f = x };
-	conv.i  = 0x5f3759df - (conv.i >> 1);
-	conv.f *= 1.5F - (x * 0.5F * conv.f * conv.f);
-	return conv.f;
+void FirstLevel::frame() {
+    drip.sound();
 }

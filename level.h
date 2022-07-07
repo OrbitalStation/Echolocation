@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/System.hpp>
 #include <vector>
+#include "drip.h"
 
 class ILevel;
 
@@ -26,6 +27,8 @@ public:
 
     virtual sf::Vector2f try_move_and_keep_in_bounds(sf::Vector2f to, void (*on_bound)()) = 0;
 
+    virtual void frame() = 0;
+
     virtual ~ILevel() = default;
 
 };
@@ -37,5 +40,11 @@ public:
     virtual bool isInside(sf::Vector2f point) override;
 
     virtual sf::Vector2f try_move_and_keep_in_bounds(sf::Vector2f to, void (*on_bound)()) override;
+
+    virtual void frame() override;
+
+private:
+
+    Drip drip;
 
 };

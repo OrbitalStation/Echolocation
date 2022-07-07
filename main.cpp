@@ -7,7 +7,7 @@ int main() {
     Player::init();
     LevelContainer::init();
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "The Blind Simulator");
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Echolocation");
 
     sf::Event event;
 
@@ -23,6 +23,11 @@ int main() {
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) Player::move_left();
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) Player::move_backward();
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) Player::move_right();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) Player::rotate_left();
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) Player::rotate_right();
+
+        (*LevelContainer::current)->frame();
 
     }
 

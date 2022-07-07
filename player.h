@@ -16,6 +16,12 @@ public:
 
     static void move_right();
 
+    static void update_angle(float degree);
+
+    static void rotate_left();
+
+    static void rotate_right();
+
 private:
 
     static void play_step_sound(const sf::Time &delay);
@@ -27,7 +33,9 @@ private:
 
     static float angle;
 
-    static sf::Clock pause_steps_clock, move_blocking_clock;
+    static float sine, cosine;
+
+    static sf::Clock pause_steps_clock, move_blocking_clock, rotation_clock;
 
     static sf::Sound step_sound, wall_bumped_sound;
 
