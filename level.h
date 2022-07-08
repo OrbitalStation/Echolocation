@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <vector>
 #include "drip.h"
+#include "bush.h"
 
 class ILevel;
 
@@ -29,6 +30,8 @@ public:
 
     virtual void frame() = 0;
 
+    virtual void on_player_step() = 0;
+
     virtual ~ILevel() = default;
 
 };
@@ -43,8 +46,12 @@ public:
 
     virtual void frame() override;
 
+    virtual void on_player_step() override;
+
 private:
 
     Drip drip;
+
+    Bush bush;
 
 };

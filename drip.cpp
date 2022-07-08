@@ -2,10 +2,6 @@
 #include "sound.h"
 #include "geometry.h"
 
-#define private public
-#include "player.h"
-#undef private
-
 const sf::Time DRIP_DELAY = sf::seconds(3);
 
 Drip::Drip(): position(), drip_sound(), drip_sound_buf(), clock() {

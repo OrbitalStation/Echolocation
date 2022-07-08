@@ -24,7 +24,7 @@ public:
 
 private:
 
-    static void play_step_sound(const sf::Time &delay);
+    static void step(const sf::Time &delay, sf::Vector2f pos);
 
 private:
 
@@ -35,7 +35,7 @@ private:
 
     static float sine, cosine;
 
-    static sf::Clock pause_steps_clock, move_blocking_clock, rotation_clock;
+    static sf::Clock pause_steps_clock, rotation_clock;
 
     static sf::Sound step_sound, wall_bumped_sound;
 

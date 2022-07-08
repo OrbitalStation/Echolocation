@@ -68,3 +68,7 @@ sf::Vector2f FirstLevel::try_move_and_keep_in_bounds(sf::Vector2f to, void (*on_
 void FirstLevel::frame() {
     drip.sound();
 }
+
+void FirstLevel::on_player_step() {
+    bush.sound_if_player_is_over();
+}

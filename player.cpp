@@ -2,17 +2,12 @@
 #include "player.h"
 #undef private
 
+#include "model.h"
 #include "level.h"
 #include "sound.h"
 #include <cmath>
 
-#define MOVE(STEP_SOUND, ...) () {\
-    if (move_blocking_clock.getElapsedTime() < STEP_SOUND ## _DELAY) return;\
-    move_blocking_clock.restart(); \
-    play_step_sound(STEP_SOUND ## _DELAY); \
-    pos = (*LevelContainer::current)->try_move_and_keep_in_bounds({__VA_ARGS__}, play_wall_bumped_sound); \
-    sf::Listener::setPosition(pos.x, pos.y, 0);\
-}
+#define MOVE(STEP_SOUND, ...) () { step(STEP_SOUND ## _DELAY, {__VA_ARGS__}); }
 
 const float TAU = M_PI * 2;
 
@@ -31,7 +26,7 @@ const sf::Time RIGHT_DELAY = sf::seconds(FORWARD_DELAY_IN_SECS * 1.2);
 
 sf::Vector2f Player::pos;
 float Player::angle, Player::sine, Player::cosine;
-sf::Clock Player::pause_steps_clock, Player::move_blocking_clock, Player::rotation_clock;
+sf::Clock Player::pause_steps_clock, Player::rotation_clock;
 sf::Sound Player::step_sound, Player::wall_bumped_sound;
 sf::SoundBuffer Player::step_sound_buf, Player::wall_bumped_sound_buf;
 
@@ -61,13 +56,19 @@ void Player::update_angle(float radian) {
     angle = radian;
     sine = std::sin(radian);
     cosine = std::cos(radian);
+    Model::setRotation(angle);
 }
 
-void Player::play_step_sound(const sf::Time &delay) {
+void Player::step(const sf::Time &delay, sf::Vector2f newpos) {
     if (pause_steps_clock.getElapsedTime() >= delay) {
-        pause_steps_clock.restart();
         step_sound.play();
-        printf("POS = %f, %f\n", pos.x, pos.y);
+
+        pos = (*LevelContainer::current)->try_move_and_keep_in_bounds(newpos, play_wall_bumped_sound);
+        (*LevelContainer::current)->on_player_step();
+
+        sf::Listener::setPosition(pos.x, pos.y, 0);
+
+        pause_steps_clock.restart();
     }
 }
 

@@ -1,5 +1,5 @@
-SRC = main.cpp player.cpp level.cpp drip.cpp geometry.cpp
-OBJ = main.o player.o level.o drip.o geometry.o
+SRC = main.cpp player.cpp level.cpp drip.cpp geometry.cpp bush.cpp model.cpp
+OBJ = main.o player.o level.o drip.o geometry.o bush.o model.o
 
 APP = app
 

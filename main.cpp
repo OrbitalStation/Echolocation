@@ -1,17 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include "player.h"
 #include "level.h"
+#include "model.h"
 
 int main() {
-
-    Player::init();
-    LevelContainer::init();
-
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Echolocation");
 
-    sf::Event event;
+    sf::Image image;
+    image.loadFromFile("icon.png");
+    window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 
-    window.display();
+    Player::init();
+    Model::init(window);
+    LevelContainer::init();
+
+    sf::Event event;
 
     while (window.isOpen()) {
 
@@ -28,6 +31,8 @@ int main() {
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) Player::rotate_right();
 
         (*LevelContainer::current)->frame();
+
+        Model::draw(window);
 
     }
 
